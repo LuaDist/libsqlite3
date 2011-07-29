@@ -1,7 +1,7 @@
 --- This file is part of LuaDist project
 
 name = "libsqlite3"
-version = "3.6.19"
+version = "3.7.7.1"
 
 desc = "SQLite is a software library that implements a self-contained, serverless, zero-configuration, transactional SQL database engine"
 url = "http://www.sqlite.org/"

@@ -1,5 +1,5 @@
 
-AM_CFLAGS = @THREADSAFE_FLAGS@ @DYNAMIC_EXTENSION_FLAGS@
+AM_CFLAGS = @THREADSAFE_FLAGS@ @DYNAMIC_EXTENSION_FLAGS@ -DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_RTREE
 
 lib_LTLIBRARIES = libsqlite3.la
 libsqlite3_la_SOURCES = sqlite3.c
@@ -12,6 +12,8 @@ sqlite3_DEPENDENCIES = $(top_builddir)/libsqlite3.la
 
 include_HEADERS = sqlite3.h sqlite3ext.h
 
-EXTRA_DIST = sqlite3.pc
+EXTRA_DIST = sqlite3.pc sqlite3.1 tea
 pkgconfigdir = ${libdir}/pkgconfig
 pkgconfig_DATA = sqlite3.pc
+
+man_MANS = sqlite3.1
