@@ -23,6 +23,11 @@
 		INCLUDE_DIRECTORIES(${READLINE_INCLUDE_DIRS})
 	ENDIF()	
 
+# Add dl on unix systems
+if (UNIX)
+  set(EXTRA_LIBS ${EXTRA_LIBS} dl)
+endif ()
+
 # SQLite Library
 	ADD_LIBRARY(sqlite3 SHARED sqlite3.c )
 	IF(CMAKE_USE_PTHREADS_INIT)	
