@@ -1,49 +1,47 @@
-# Copyright (C) 2007-2009 LuaDist.
+# Copyright (C) 2007-2012 LuaDist.
 # Created by Peter Kapec
 # Redistribution and use of this file is allowed according to the terms of the MIT license.
 # For details see the COPYRIGHT file distributed with LuaDist.
 # Please note that the package source code is licensed under its own license.
 
 # Project
-	PROJECT(sqlite3 C)
-	CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
-	INCLUDE(dist.cmake)
+project ( sqlite3 C )
+cmake_minimum_required ( VERSION 2.8 )
+include ( cmake/dist.cmake )
 
 # SQLite configuration
-	FIND_PACKAGE(Threads)
-	IF(Threads_FOUND)
-		IF(CMAKE_USE_PTHREADS_INIT)
-			ADD_DEFINITIONS(-D_REENTRANT=1 -DTHREADSAFE=1)
-			SET(EXTRA_LIBS ${CMAKE_THREAD_LIBS_INIT})
-		ENDIF()
-	ENDIF()
-	
-	FIND_PACKAGE(Readline)
-	IF(READLINE_FOUND)
-		INCLUDE_DIRECTORIES(${READLINE_INCLUDE_DIRS})
-	ENDIF()	
+find_package ( Threads )
+if ( Threads_FOUND )
+  if ( CMAKE_USE_PTHREADS_INIT )
+    add_definitions ( -D_REENTRANT=1 -DTHREADSAFE=1 )
+    set ( EXTRA_LIBS ${CMAKE_THREAD_LIBS_INIT} )
+  endif ( )
+endif ( )
+find_package ( Readline )
+if ( READLINE_FOUND )
+  include_directories ( ${READLINE_INCLUDE_DIRS} )
+endif ( )
 
 # Add dl on unix systems
-if (UNIX)
-  set(EXTRA_LIBS ${EXTRA_LIBS} dl)
-endif ()
+if ( UNIX )
+  set ( EXTRA_LIBS ${EXTRA_LIBS} dl )
+endif ( )
 
 # SQLite Library
-	ADD_LIBRARY(sqlite3 SHARED sqlite3.c )
-	IF(CMAKE_USE_PTHREADS_INIT)	
-		TARGET_LINK_LIBRARIES(sqlite3 ${EXTRA_LIBS})
-	ENDIF()
-	
-	INSTALL(TARGETS sqlite3 RUNTIME DESTINATION ${INSTALL_BIN} LIBRARY DESTINATION ${INSTALL_LIB} ARCHIVE DESTINATION ${INSTALL_LIB})
+add_library ( sqlite3 sqlite3.c )
+if ( CMAKE_USE_PTHREADS_INIT )
+  target_link_libraries ( sqlite3 ${EXTRA_LIBS} )
+endif ( )
+install_library ( sqlite3 )
 
 # Install Headers
-	INSTALL(FILES sqlite3.h sqlite3ext.h DESTINATION ${INSTALL_INC})
-	
+install_header ( sqlite3.h sqlite3ext.h )
 # SQLite client
-	ADD_EXECUTABLE(sqlite-app shell.c)
-	SET_TARGET_PROPERTIES(sqlite-app PROPERTIES OUTPUT_NAME sqlite CLEAN_DIRECT_OUTPUT 1 )	
-	TARGET_LINK_LIBRARIES(sqlite-app sqlite3)	
-	IF(READLINE_LIBRARIES)
-		TARGET_LINK_LIBRARIES(sqlite-app ${READLINE_LIBRARIES})	
-	ENDIF()
-	INSTALL(TARGETS sqlite-app RUNTIME DESTINATION ${INSTALL_BIN} LIBRARY DESTINATION ${INSTALL_LIB} ARCHIVE DESTINATION ${INSTALL_LIB})
+add_executable ( sqlite-app shell.c )
+set_target_properties ( sqlite-app PROPERTIES OUTPUT_NAME sqlite CLEAN_DIRECT_OUTPUT 
+  1 )
+target_link_libraries ( sqlite-app sqlite3 )
+if ( READLINE_LIBRARIES )
+  target_link_libraries ( sqlite-app ${READLINE_LIBRARIES} )
+endif ( )
+install_executable ( sqlite-app )

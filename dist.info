@@ -7,3 +7,4 @@ desc = "SQLite is a software library that implements a self-contained, serverles
 url = "http://www.sqlite.org/"
 license = "public domain"
 maintainer = "Peter Kapec"
+author = "sqlite.org"
